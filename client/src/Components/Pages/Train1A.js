@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./descriptionstyle.css";
 
 const Train1A = (props) => {
 
@@ -43,6 +43,7 @@ const Train1A = (props) => {
       case "N":
       case "Q":
       case "R":
+      case "W":
         return "#fecb00"
         break;
       case "S":
@@ -96,3 +97,5 @@ const Train1A = (props) => {
 
 
 export default Train1A;
+
+

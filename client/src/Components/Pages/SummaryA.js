@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import xml2js from 'xml2js';
 import Summary from './Summary';
-import Train from "./Train";
+import { Helmet } from "react-helmet";
+import API from "../../Utils/API";
+import Loading from '../../assets/loading.svg';
 import "./style.css";
 
 var parseString = xml2js.parseString;
@@ -17,73 +19,69 @@ class SummaryA extends Component {
       matches: []
 
     };
-    this.corsPolicy = this.corsPolicy.bind(this);
+    // this.summaryStatus = this.summaryStatus.bind(this);
+    this.getStatusSummary = this.getStatusSummary.bind(this);
+
     this.logo = this.logo.bind(this);
   }
 
-  corsPolicy() {
-    var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
-      targetUrl = 'http://web.mta.info/status/serviceStatus.txt'
-    const that = this;
-    fetch(proxyUrl + targetUrl, {
-
-      headers: {
-        origin: 'http://web.mta.info/status'
-      }
-    })
-      .then(response => response.text())
-      .then(data => {
-
-        parseString(data, function (err, result) {
-
-          that.setState({
-            lineList: result["service"]["subway"][0]["line"],
-
-          })
-        });
-
-      })
-      .catch(e => {
-        console.log(e);
-        return e;
-      })
+  componentDidMount() {
+    // this.summaryStatus();
+    this.getStatusSummary()
   }
 
-  componentWillMount() {
-    //call1 ServiceStatusSubway.txt
-    // var lineSummary = [] (res from call1)
 
-    //call2  'http://web.mta.info/status/ServiceStatusSubway.xml'
-    // var linedetails = [] (res from call2)
 
-    // lineList = vvvvvv
-    // lineSummary .foreach (item)
-    //if status != good service
-    //pull train information from linedatils base on line name('123', '1','2','3')
-    // return 
-    //
-    // filter call1 and retreive datils from call2
+  // summaryStatus = () => {
+  //   API.getStatusSummary()
+  //       .then((data) => {
+  //           console.log(data);
 
-  }
-  // get details
-  // lineDetails () {
+  //       }).then(() => {
+  //           // this.findStationForThisLine();
+  //       })
   // }
 
 
-  // getCatPicture() {
-  //   var proxyUrl = 'https://cors-anywhere.herokuapp.com/'
 
-  //   var APIKey = "fa66ddb413e7c2536fabff2a1c8878bb"
+  getStatusSummary = () => {
+    const that = this;
+    API.getStatusSummary()
+      .then((data) => {
+        console.log(data.data);
+        var src = data.data
+        parseString(src, function (err, result) {
+          console.log(result)
+          that.setState({
+            lineList: result["service"]["subway"][0]["line"]
 
-  //   var  targetUrl = "http://datamine.mta.info/mta_esi.php?key=" + APIKey + "&feed_id=1"
+          })
+        })
+        
+      })
+  }
 
-  //   fetch(proxyUrl + targetUrl)
+  // summaryStatus() {
+
+
+  //   var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+  //   var targetUrl = 'http://web.mta.info/status/serviceStatus.txt';
+  //   const that = this;
+  //   fetch(proxyUrl+targetUrl, {
+
+  //     // headers: {
+  //     //   origin: 'http://web.mta.info/status'
+  //     // }
+  //   })
   //     .then(response => response.text())
   //     .then(data => {
-  //       console.log(data);
-
+  //       console.log(data)
   //       parseString(data, function (err, result) {
+  //         console.log(result)
+  //         that.setState({
+  //           lineList: result["service"]["subway"][0]["line"],
 
+  //         })
   //       });
 
   //     })
@@ -92,6 +90,7 @@ class SummaryA extends Component {
   //       return e;
   //     })
   // }
+
 
 
   logo = (statusWord) => {
@@ -176,18 +175,29 @@ class SummaryA extends Component {
 
 
   }
+  // findW = (name) => {
+  //   if (this.props === "NQR"){
+  //     return "NQRW"
+  //   }
+  //   else {
+  //     return (this.props)
+  //   }
+  // }
 
 
   render() {
-
+console.log(this.state.lineList)
     return (
 
       <div className="container text-center dogmatch widthBox ">
-        <div>{this.corsPolicy()}</div>
 
         <div className="container mx-auto all">
 
-          {
+
+
+          {!this.state.lineList.length ?
+            (<img src={Loading} />)
+            :
             this.state.lineList.map(line => (
               <Summary
                 name={line["name"][0]}
@@ -198,6 +208,7 @@ class SummaryA extends Component {
                 backgroundcolor={this.lineColor(line["name"][0])}
                 findMatch={this.findMatch}
                 matches={this.state.matches}
+              // findW = {this.findW}
               />
 
 
