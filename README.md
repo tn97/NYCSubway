@@ -15,6 +15,6 @@ This application was created for the frequenters of New York City. It's always t
 * [GTFS-Realtime](https://developers.google.com/transit/gtfs-realtime/)
 
 ## MTA Information Used
-[Summary Status](http://web.mta.info/status/serviceStatus.txt)
-[Detail Status](http://web.mta.info/status/ServiceStatusSubway.xml)
-[Real-Time Subway Locations](http://datamine.mta.info/list-of-feeds)
+*[Summary Status](http://web.mta.info/status/serviceStatus.txt)
+*[Detail Status](http://web.mta.info/status/ServiceStatusSubway.xml)
+*[Real-Time Subway Locations](http://datamine.mta.info/list-of-feeds)
